@@ -1,21 +1,33 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import { store } from './app/store';
-import { Provider } from 'react-redux';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import { render } from "react-dom";
+import News from './News';
+import "./index.css";
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
+const initialState={items: []};
+
+function reducer(state=initialState,action){ 
+
+  switch(action.type){
+    case 'ADD_NEWS': return {...state,items:[...state.items,action.newItem]}
+	
+	case 'DEL_NEWS':
+		return {...state,items:[state.items.filter((item,index)=>{
+		
+	   if(item.id == action.delId) {return false}
+  	   return true;  }) ][0]		
+	  }
+	
+    default: { return state;}
+  }
+}
+
+const store=createStore(reducer);
+const App = () => (
+  <Provider store={store}>
+    <News />
+  </Provider>
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+render(<App />, document.getElementById("root"));
