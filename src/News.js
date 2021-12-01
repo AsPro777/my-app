@@ -15,7 +15,7 @@ function News(props) {
 	let news=[];
 
 	useEffect(() => {
-    fetch("https://test-api-app-for-react.herokuapp.com/api/v1/news")
+    fetch("https://*************************")
       .then(res => res.json())
       .then(
         (result) => {
